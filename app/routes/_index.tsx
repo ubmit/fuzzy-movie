@@ -1,6 +1,8 @@
 import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
+import { Link } from "@remix-run/react";
 import { useFetcher } from "react-router-dom";
 import invariant from "tiny-invariant";
+import { getMovies } from "~/data/get-movies";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,8 +12,10 @@ export const meta: MetaFunction = () => {
 };
 
 type Movie = {
-  imdbID: string;
   Title: string;
+  Year: string;
+  imdbID: string;
+  Type: string;
   Poster: string;
 };
 
@@ -19,14 +23,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const search = String(formData.get("search"));
   invariant(search, "Missing search, please fill the search field.");
-
-  const apiKey = process.env.OMDB_API_KEY;
-  const response = await fetch(
-    `http://www.omdbapi.com/?s=${search}&apikey=${apiKey}`
-  );
-  const data = await response.json();
-
-  return data;
+  return getMovies(search);
 }
 
 export default function Index() {
@@ -42,10 +39,12 @@ export default function Index() {
       </fetcher.Form>
       <ul>
         {fetcher.data?.Search?.map((movie: Movie) => (
-          <li key={movie.imdbID}>
-            <h2>{movie.Title}</h2>
-            <img src={movie.Poster} alt={movie.Title} />
-          </li>
+          <Link to={`/details/${movie.imdbID}`} key={movie.imdbID}>
+            <li>
+              <h2>{movie.Title}</h2>
+              <img src={movie.Poster} alt={movie.Title} />
+            </li>
+          </Link>
         ))}
       </ul>
     </div>
