@@ -5,7 +5,7 @@ import invariant from "tiny-invariant";
 export async function loader({ params }: LoaderFunctionArgs) {
   const apiKey = process.env.OMDB_API_KEY;
   const response = await fetch(
-    `https://www.omdbapi.com/?i=${params.id}&apikey=${apiKey}`
+    `https://www.omdbapi.com/?i=${params.movieId}&apikey=${apiKey}`
   );
   const movie = await response.json();
   invariant(movie, "Movie not found");
