@@ -16,10 +16,24 @@ export default function Details() {
   const movie = useLoaderData<typeof loader>();
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <h1>{movie.Title}</h1>
-      <img src={movie.Poster} alt={movie.Title} />
-      <p>{movie.Plot}</p>
+      <button style={{ width: 80 }}>Favorite</button>
+      <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ width: 280, height: 420 }}>
+          <img
+            src={movie.Poster}
+            alt={movie.Title}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              overflow: "hidden",
+            }}
+          />
+        </div>
+        <p style={{ margin: 0, maxWidth: 560 }}>{movie.Plot}</p>
+      </div>
     </div>
   );
 }
