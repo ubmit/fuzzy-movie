@@ -1,15 +1,8 @@
-import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
-import { useFetcher } from "react-router-dom";
-import invariant from "tiny-invariant";
+import { LoaderFunctionArgs } from "@remix-run/node";
+import { Form, Link, json, useLoaderData } from "@remix-run/react";
+import { useEffect } from "react";
+import { useDebounceSubmit } from "remix-utils/use-debounce-submit";
 import { getMovies } from "~/data/get-movies";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Movie Search App" },
-    { name: "description", content: "Welcome to Movie Search!" },
-  ];
-};
 
 type Movie = {
   Title: string;
@@ -17,26 +10,51 @@ type Movie = {
   Poster: string;
 };
 
-export async function action({ request }: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const search = String(formData.get("search"));
-  invariant(search, "Missing search, please fill the search field.");
-  return getMovies(search);
+export async function loader({ request }: LoaderFunctionArgs) {
+  const url = new URL(request.url);
+  const search = url.searchParams.get("search");
+  if (!search) return json({ movies: [], search });
+  const movies = await getMovies(search ?? "batman");
+  return json({ movies, search });
 }
 
 export default function Index() {
-  const fetcher = useFetcher();
+  const { movies, search } = useLoaderData<typeof loader>();
+  const submit = useDebounceSubmit();
+
+  useEffect(() => {
+    const searchField = document.getElementById("search");
+    if (searchField instanceof HTMLInputElement) {
+      searchField.value = search ?? "";
+    }
+  }, [search]);
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Welcome to Movie Search!</h1>
-      <fetcher.Form method="post">
-        <label htmlFor="search">Search for a movie:</label>
-        <input type="text" id="search" name="search" />
-        <button type="submit">Search</button>
-      </fetcher.Form>
+      <Form
+        id="search-form"
+        onChange={(event) => {
+          const isFirstSearch = search === null;
+          submit(event.currentTarget, {
+            replace: !isFirstSearch,
+            debounceTimeout: 1000,
+          });
+        }}
+        role="search"
+      >
+        <input
+          aria-label="Search movies"
+          defaultValue={search ?? ""}
+          id="search"
+          name="search"
+          placeholder="Search"
+          type="search"
+        />
+      </Form>
       <ul>
-        {fetcher.data?.Search?.map((movie: Movie) => (
+        {movies?.Search?.map((movie: Movie) => (
+          // TODO: check if I can prefetch those links so the navigation is faster
           <Link to={`/details/${movie.imdbID}`} key={movie.imdbID}>
             <li>
               <h2>{movie.Title}</h2>
