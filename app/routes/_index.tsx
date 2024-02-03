@@ -54,15 +54,24 @@ export default function Index() {
       </Form>
       <ul>
         {movies?.Search?.map((movie: Movie) => (
-          // TODO: check if I can prefetch those links so the navigation is faster
-          <Link to={`/details/${movie.imdbID}`} key={movie.imdbID}>
-            <li>
-              <h2>{movie.Title}</h2>
-              <img src={movie.Poster} alt={movie.Title} />
-            </li>
-          </Link>
+          <li key={movie.imdbID}>
+            <MovieLink movie={movie} />
+          </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+function MovieLink({ movie }: { movie: Movie }) {
+  return (
+    <Link
+      to={`/details/${movie.imdbID}`}
+      prefetch="intent"
+      unstable_viewTransition
+    >
+      <h2>{movie.Title}</h2>
+      <img src={movie.Poster} alt={`Poster of ${movie.Title}.`} />
+    </Link>
   );
 }
