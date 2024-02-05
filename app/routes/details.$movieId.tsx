@@ -74,7 +74,9 @@ export default function Details() {
 
 function Favorite({ movie }: { movie: { favorite: boolean } }) {
   const fetcher = useFetcher();
-  const favorite = movie.favorite;
+  const favorite = fetcher.formData
+    ? fetcher.formData.get("favorite") === "true"
+    : movie.favorite;
 
   return (
     <fetcher.Form method="post">
