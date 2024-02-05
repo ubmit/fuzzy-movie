@@ -50,23 +50,18 @@ export default function Details() {
   const { movie, favorite } = useLoaderData<typeof loader>();
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+    <div className="flex flex-col gap-3">
       <h1>{movie.Title}</h1>
       <Favorite movie={{ favorite }} />
-      <div style={{ display: "flex", gap: 8 }}>
-        <div style={{ width: 280, height: 420 }}>
+      <div className="flex gap-2">
+        <div className="w-72 h-[432px]">
           <img
+            className="w-full h-full object-cover overflow-hidden"
             src={movie.Poster}
             alt={movie.Title}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              overflow: "hidden",
-            }}
           />
         </div>
-        <p style={{ margin: 0, maxWidth: 560 }}>{movie.Plot}</p>
+        <p className="m-0 max-w-[576px]">{movie.Plot}</p>
       </div>
     </div>
   );
