@@ -46,17 +46,17 @@ export default function Index() {
   }, [search]);
 
   return (
-    <section className="flex flex-col items-center gap-6 text-gray-900">
+    <section className="flex flex-col items-center text-gray-900">
       <h1 className="text-5xl sm:text-6xl font-bold tracking-wide">
         Fuzzy Movie
       </h1>
-      <p className="max-w-prose text-lg text-center text-gray-700">
+      <p className="max-w-prose text-lg text-center text-gray-700 mt-6">
         Find your next film favorite with our fuzzy search. Keep track of your
         top picks with our <Link to="/favorites">favorites feature</Link>. Dive
         into the world of cinema now!
       </p>
       <Form
-        className="w-72"
+        className="w-72 mt-4"
         id="search-form"
         onChange={(event) => {
           const isFirstSearch = search === null;
