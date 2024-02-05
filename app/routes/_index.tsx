@@ -56,8 +56,11 @@ export default function Index() {
       </h1>
       <p className="max-w-prose text-lg text-center text-gray-700 mt-6">
         Find your next film favorite with our fuzzy search. Keep track of your
-        top picks with our <Link to="/favorites">favorites feature</Link>. Dive
-        into the world of cinema now!
+        top picks with our{" "}
+        <Link to="/favorites" className="hover:opacity-70 transition-opacity">
+          favorites feature
+        </Link>
+        . Dive into the world of cinema now!
       </p>
       <Form
         className="w-72 mt-4"
