@@ -11,17 +11,20 @@ type Movie = {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  const userAgent = request.headers.get("User-Agent");
+  const isMacOS = userAgent?.includes("Mac") ?? false;
+
   const url = new URL(request.url);
   const search = url.searchParams.get("search");
-  if (!search) return json({ movies: [], search });
-  const movies = await getMovies(search ?? "batman");
-  return json({ movies, search });
+  if (!search) return json({ movies: [], search, isMacOS });
+
+  const movies = await getMovies(search);
+  return json({ movies, search, isMacOS });
 }
 
 export default function Index() {
-  const { movies, search } = useLoaderData<typeof loader>();
+  const { movies, search, isMacOS } = useLoaderData<typeof loader>();
   const submit = useDebounceSubmit();
-  const isMacOS = window.navigator.platform.includes("Mac");
 
   useEffect(() => {
     const listener = (event: KeyboardEvent) => {
@@ -34,6 +37,7 @@ export default function Index() {
         }
       }
     };
+
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
   }, [isMacOS]);
