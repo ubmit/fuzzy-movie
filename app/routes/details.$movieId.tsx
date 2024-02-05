@@ -3,16 +3,10 @@ import { useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { userFavorites } from "../cookies.server";
 
-const DEFAULT_COOKIE_VALUE = { favorites: new Set() };
-
-async function getCookieValue(
-  request: LoaderFunctionArgs["request"] | ActionFunctionArgs["request"]
-) {
-  const cookieHeader = request.headers.get("Cookie");
-  return (await userFavorites.parse(cookieHeader)) ?? DEFAULT_COOKIE_VALUE;
-}
+type Cookie = { favorites: string[] };
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
+  invariant(params.movieId, "Missing movieId param");
   const apiKey = process.env.OMDB_API_KEY;
   const response = await fetch(
     `https://www.omdbapi.com/?i=${params.movieId}&apikey=${apiKey}`
@@ -20,26 +14,36 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const movie = await response.json();
   invariant(movie, "Movie not found");
 
-  const cookie = await getCookieValue(request);
-  invariant(cookie.favorites, "Missing favorites in cookie");
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie: Cookie = (await userFavorites.parse(cookieHeader)) ?? {
+    favorites: [],
+  };
 
-  return json({ movie, favorite: cookie.favorites.has(params.movieId) });
+  return json({ movie, favorite: cookie.favorites.includes(params.movieId) });
 }
 
 export async function action({ params, request }: ActionFunctionArgs) {
   invariant(params.movieId, "Missing movieId param");
 
-  const cookie = await getCookieValue(request);
-  invariant(cookie.favorites, "Missing favorites in cookie");
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie: Cookie = (await userFavorites.parse(cookieHeader)) ?? {
+    favorites: [],
+  };
 
   const formData = await request.formData();
-  if (formData.get("favorite") === "false") {
-    cookie.favorites.delete(params.movieId);
+  if (formData.get("favorite") === "true") {
+    cookie.favorites = [...cookie.favorites, params.movieId];
   } else {
-    cookie.favorites.add(params.movieId);
+    cookie.favorites = cookie.favorites.filter(
+      (id: string) => id !== params.movieId
+    );
   }
 
-  return json({ ok: true });
+  return new Response(JSON.stringify({ ok: true }), {
+    headers: {
+      "Set-Cookie": await userFavorites.serialize(cookie),
+    },
+  });
 }
 
 export default function Details() {
