@@ -69,7 +69,7 @@ export default function Index() {
           const isFirstSearch = search === null;
           submit(event.currentTarget, {
             replace: !isFirstSearch,
-            debounceTimeout: 500,
+            debounceTimeout: 300,
           });
         }}
         role="search"
