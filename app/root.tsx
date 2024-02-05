@@ -9,7 +9,6 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import stylesheet from "~/tailwind.css";
-import { Header } from "./header";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
@@ -26,7 +25,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <main className="max-w-screen-lg mx-auto py-10">
+        <main className="max-w-screen-lg mx-auto py-10 px-3 sm:px-0">
           <Outlet />
         </main>
         <ScrollRestoration />
