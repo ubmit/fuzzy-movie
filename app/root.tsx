@@ -1,7 +1,6 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction } from "@remix-run/node";
 import {
-  Link,
   Links,
   LiveReload,
   Meta,
@@ -10,6 +9,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import stylesheet from "~/tailwind.css";
+import { Header } from "./header";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
@@ -26,6 +26,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <Header />
         <main className="max-w-screen-lg mx-auto py-8">
           <Outlet />
         </main>
