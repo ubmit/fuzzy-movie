@@ -13,7 +13,6 @@ export function Header() {
           </li>
         </ul>
       </nav>
-      <input className="text-black p-1 rounded-sm" type="search"></input>
     </header>
   );
 }
