@@ -30,8 +30,13 @@ export default function Index() {
   }, [search]);
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1 className="text-3xl font-bold underline">Welcome to Movie Search!</h1>
+    <section className="flex flex-col items-center gap-6 text-gray-900">
+      <h1 className="text-6xl font-bold tracking-wide">Fuzzy Movie</h1>
+      <p className="max-w-prose text-lg text-center text-gray-700">
+        Find your next film favorite with our fuzzy search. Keep track of your
+        top picks with our <Link to="/favorites">favorites feature</Link>. Dive
+        into the world of cinema now!
+      </p>
       <Form
         id="search-form"
         onChange={(event) => {
@@ -44,6 +49,7 @@ export default function Index() {
         role="search"
       >
         <input
+          className="text-gray-900 rounded-md border-solid border-2 border-gray-400 p-2 w-96"
           aria-label="Search movies"
           defaultValue={search ?? ""}
           id="search"
@@ -59,7 +65,7 @@ export default function Index() {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 }
 
