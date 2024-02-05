@@ -27,7 +27,7 @@ export default function App() {
       </head>
       <body>
         <Header />
-        <main className="max-w-screen-lg mx-auto py-8">
+        <main className="max-w-screen-lg mx-auto py-10">
           <Outlet />
         </main>
         <ScrollRestoration />
