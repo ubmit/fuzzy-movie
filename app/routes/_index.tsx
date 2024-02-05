@@ -21,6 +21,22 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Index() {
   const { movies, search } = useLoaderData<typeof loader>();
   const submit = useDebounceSubmit();
+  const isMacOS = window.navigator.platform.includes("Mac");
+
+  useEffect(() => {
+    const listener = (event: KeyboardEvent) => {
+      const modifierKey = isMacOS ? event.metaKey : event.ctrlKey;
+      if (modifierKey && event.key === "k") {
+        event.preventDefault();
+        const searchField = document.getElementById("search");
+        if (searchField instanceof HTMLInputElement) {
+          searchField.focus();
+        }
+      }
+    };
+    window.addEventListener("keydown", listener);
+    return () => window.removeEventListener("keydown", listener);
+  }, [isMacOS]);
 
   useEffect(() => {
     const searchField = document.getElementById("search");
@@ -31,13 +47,16 @@ export default function Index() {
 
   return (
     <section className="flex flex-col items-center gap-6 text-gray-900">
-      <h1 className="text-6xl font-bold tracking-wide">Fuzzy Movie</h1>
+      <h1 className="text-5xl sm:text-6xl font-bold tracking-wide">
+        Fuzzy Movie
+      </h1>
       <p className="max-w-prose text-lg text-center text-gray-700">
         Find your next film favorite with our fuzzy search. Keep track of your
         top picks with our <Link to="/favorites">favorites feature</Link>. Dive
         into the world of cinema now!
       </p>
       <Form
+        className="w-72"
         id="search-form"
         onChange={(event) => {
           const isFirstSearch = search === null;
@@ -48,15 +67,22 @@ export default function Index() {
         }}
         role="search"
       >
-        <input
-          className="text-gray-900 rounded-md border-solid border-2 border-gray-400 p-2 w-96"
-          aria-label="Search movies"
-          defaultValue={search ?? ""}
-          id="search"
-          name="search"
-          placeholder="Search"
-          type="search"
-        />
+        <div className="relative mt-2 rounded-md shadow-sm">
+          <input
+            className="w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            aria-label="Search movies"
+            defaultValue={search ?? ""}
+            id="search"
+            name="search"
+            placeholder="Search"
+            type="search"
+          />
+          <div className="absolute inset-y-1.5 right-1.5 flex items-center bg-gray-200 rounded-md h-2/3">
+            <span className="p-1 font-mono text-sm sm:text-xs sm:leading-6 tracking-tight text-gray-500">
+              {isMacOS ? "CMD" : "CTRL"}+K
+            </span>
+          </div>
+        </div>
       </Form>
       <ul>
         {movies?.Search?.map((movie: Movie) => (
