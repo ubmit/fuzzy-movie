@@ -26,7 +26,6 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Header />
         <main className="max-w-screen-lg mx-auto py-10">
           <Outlet />
         </main>
