@@ -31,7 +31,7 @@ export default function Index() {
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Movie Search!</h1>
+      <h1 className="text-3xl font-bold underline">Welcome to Movie Search!</h1>
       <Form
         id="search-form"
         onChange={(event) => {
