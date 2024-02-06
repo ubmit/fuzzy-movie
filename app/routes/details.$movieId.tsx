@@ -48,11 +48,15 @@ export default function Details() {
   const { movie, favorite } = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex flex-col gap-3">
-      <h1>{movie.Title}</h1>
-      <Favorite movie={{ favorite }} />
-      <div className="flex gap-2">
-        <div className="w-72 h-[432px]">
+    <div className="flex flex-col items-center">
+      <h1 className="text-5xl text-gray-900">{movie.Title}</h1>
+
+      <div className="flex gap-4 mt-12">
+        <div className="relative w-72 h-[432px]">
+          <Favorite
+            movie={{ favorite }}
+            className="absolute inset-y-0 right-0"
+          />
           <img
             className="w-full h-full object-cover overflow-hidden"
             src={movie.Poster}
@@ -65,15 +69,22 @@ export default function Details() {
   );
 }
 
-function Favorite({ movie }: { movie: { favorite: boolean } }) {
+function Favorite({
+  movie,
+  className,
+}: {
+  movie: { favorite: boolean };
+  className: string;
+}) {
   const fetcher = useFetcher();
   const favorite = fetcher.formData
     ? fetcher.formData.get("favorite") === "true"
     : movie.favorite;
 
   return (
-    <fetcher.Form method="post">
+    <fetcher.Form method="post" className={className}>
       <button
+        className="p-2"
         aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
         name="favorite"
         value={favorite ? "false" : "true"}
