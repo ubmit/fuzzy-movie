@@ -94,7 +94,7 @@ export default function Index() {
           </div>
         </div>
       </Form>
-      <ul className="grid grid-cols-5 gap-6 pt-8">
+      <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 pt-8">
         {movies?.Search?.map((movie: Movie) => (
           <li key={movie.imdbID}>
             <MovieLink movie={movie} />
