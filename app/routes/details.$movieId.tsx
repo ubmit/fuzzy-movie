@@ -2,16 +2,14 @@ import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { userFavorites } from "../cookies.server";
+import { getMovieById } from "~/data/get-movie-by-id";
 
 type Cookie = { favorites: string[] };
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
   invariant(params.movieId, "Missing movieId param");
-  const apiKey = process.env.OMDB_API_KEY;
-  const response = await fetch(
-    `https://www.omdbapi.com/?i=${params.movieId}&apikey=${apiKey}`
-  );
-  const movie = await response.json();
+
+  const movie = await getMovieById(params.movieId);
   invariant(movie, "Movie not found");
 
   const cookieHeader = request.headers.get("Cookie");
