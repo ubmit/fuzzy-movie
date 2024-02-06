@@ -25,7 +25,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <main className="max-w-screen-lg mx-auto py-10 px-3 sm:px-0">
+        <main className="max-w-screen-lg mx-auto py-10 px-3 sm:px-4 lg:px-0">
           <Outlet />
         </main>
         <ScrollRestoration />
