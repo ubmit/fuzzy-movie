@@ -1,6 +1,6 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { Form, Link, json, useLoaderData } from "@remix-run/react";
-import { SVGProps, useEffect } from "react";
+import { LoaderFunctionArgs, defer } from "@remix-run/node";
+import { Await, Form, Link, useLoaderData } from "@remix-run/react";
+import { SVGProps, Suspense, useEffect } from "react";
 import { useDebounceSubmit } from "remix-utils/use-debounce-submit";
 import { getMovies } from "~/data/get-movies";
 
@@ -16,10 +16,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const url = new URL(request.url);
   const search = url.searchParams.get("search");
-  if (!search) return json({ movies: [], search, isMacOS });
+  const movies = await getMovies(search ?? "");
 
-  const movies = await getMovies(search);
-  return json({ movies, search, isMacOS });
+  return defer({ movies, search, isMacOS });
 }
 
 export default function Index() {
@@ -94,12 +93,12 @@ export default function Index() {
           </div>
         </div>
       </Form>
-      <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 pt-8">
-        {movies?.Search?.map((movie: Movie) => (
-          <li key={movie.imdbID}>
-            <MovieLink movie={movie} />
-          </li>
-        ))}
+      <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 pt-8 w-full">
+        <Suspense fallback={<MoviesSkeleton />}>
+          <Await resolve={movies}>
+            {(movies) => <Movies movies={movies} />}
+          </Await>
+        </Suspense>
       </ul>
     </section>
   );
@@ -123,6 +122,20 @@ function MovieLink({ movie }: { movie: Movie }) {
   );
 }
 
+function Movies({ movies }: { movies: { Search: Array<Movie> } }) {
+  return movies?.Search?.map((movie) => (
+    <li key={movie.imdbID}>
+      <MovieLink movie={movie} />
+    </li>
+  ));
+}
+
+function MoviesSkeleton() {
+  return Array.from({ length: 10 }).map((_, index) => (
+    <Skeleton key={index} className="h-72 w-full bg-gray-400/10" />
+  ));
+}
+
 function SearchIcon({ className }: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -140,5 +153,15 @@ function SearchIcon({ className }: SVGProps<SVGSVGElement>) {
       <circle cx={11} cy={11} r={8} />
       <path d="M21 21l-4.3-4.3" />
     </svg>
+  );
+}
+
+function Skeleton({ className }: { className?: string }) {
+  return (
+    <div
+      className={["animate-pulse rounded-md bg-primary/10", className]
+        .filter(Boolean)
+        .join(" ")}
+    />
   );
 }
