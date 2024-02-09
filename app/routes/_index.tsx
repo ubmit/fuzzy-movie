@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { Form, Link, json, useLoaderData } from "@remix-run/react";
-import { useEffect } from "react";
+import { SVGProps, useEffect } from "react";
 import { useDebounceSubmit } from "remix-utils/use-debounce-submit";
 import { getMovies } from "~/data/get-movies";
 
@@ -123,7 +123,7 @@ function MovieLink({ movie }: { movie: Movie }) {
   );
 }
 
-function SearchIcon({ className }: { className?: string }) {
+function SearchIcon({ className }: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
