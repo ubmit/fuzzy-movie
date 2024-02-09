@@ -1,5 +1,5 @@
 {
-  "name": "movie-search",
+  "name": "fuzzy-movie",
   "private": true,
   "sideEffects": false,
   "type": "module",
