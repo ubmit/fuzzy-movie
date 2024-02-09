@@ -16,7 +16,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const url = new URL(request.url);
   const search = url.searchParams.get("search");
-  const movies = await getMovies(search ?? "");
+  const movies = getMovies(search ?? "");
 
   return defer({ movies, search, isMacOS });
 }
