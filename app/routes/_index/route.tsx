@@ -3,12 +3,8 @@ import { Await, Form, Link, useLoaderData } from "@remix-run/react";
 import { SVGProps, Suspense, useEffect } from "react";
 import { useDebounceSubmit } from "remix-utils/use-debounce-submit";
 import { getMovies } from "~/data/get-movies";
-
-type Movie = {
-  Title: string;
-  imdbID: string;
-  Poster: string;
-};
+import { Movie } from "./types";
+import { MovieLink } from "./movie-link";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const userAgent = request.headers.get("User-Agent");
@@ -101,24 +97,6 @@ export default function Index() {
         </Suspense>
       </ul>
     </section>
-  );
-}
-
-function MovieLink({ movie }: { movie: Movie }) {
-  return (
-    <Link
-      to={`/details/${movie.imdbID}`}
-      prefetch="intent"
-      unstable_viewTransition
-      className="flex flex-col h-72 border-2 border-gray-100 rounded-md transition-transform transform hover:scale-105 hover:shadow-md"
-    >
-      <h2 className="px-2 py-1 text-base text-gray-700">{movie.Title}</h2>
-      <img
-        src={movie.Poster}
-        alt={`Poster of ${movie.Title}.`}
-        className="w-full h-full object-cover overflow-hidden"
-      />
-    </Link>
   );
 }
 
