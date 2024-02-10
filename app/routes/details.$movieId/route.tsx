@@ -1,7 +1,7 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { userFavorites } from "../cookies.server";
+import { userFavorites } from "../../cookies.server";
 import { getMovieById } from "~/data/get-movie-by-id";
 import { SVGProps } from "react";
 
