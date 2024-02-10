@@ -1,9 +1,9 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { userFavorites } from "../../cookies.server";
 import { getMovieById } from "~/data/get-movie-by-id";
-import { HeartIcon } from "./heart-icon";
+import { Favorite } from "./favorite";
 
 type Cookie = { favorites: string[] };
 
@@ -67,40 +67,5 @@ export default function Details() {
         <p className="m-0 max-w-[576px]">{movie.Plot}</p>
       </div>
     </div>
-  );
-}
-
-function Favorite({
-  movie,
-  className,
-}: {
-  movie: { favorite: boolean };
-  className: string;
-}) {
-  const fetcher = useFetcher();
-  const favorite = fetcher.formData
-    ? fetcher.formData.get("favorite") === "true"
-    : movie.favorite;
-
-  return (
-    <fetcher.Form method="post" className={className}>
-      <button
-        className="p-2 mt-2 mr-2 rounded-md bg-gray-200/60 backdrop-blur-md shadow-md"
-        aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
-        name="favorite"
-        value={favorite ? "false" : "true"}
-      >
-        <HeartIcon
-          className={[
-            "w-6 h-6 stroke-2",
-            favorite
-              ? "stroke-red-600 fill-red-600"
-              : "stroke-gray-500 fill-none",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-        />
-      </button>
-    </fetcher.Form>
   );
 }
