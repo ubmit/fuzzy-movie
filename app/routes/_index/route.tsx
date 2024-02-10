@@ -1,10 +1,12 @@
 import { LoaderFunctionArgs, defer } from "@remix-run/node";
 import { Await, Form, Link, useLoaderData } from "@remix-run/react";
-import { SVGProps, Suspense, useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useDebounceSubmit } from "remix-utils/use-debounce-submit";
 import { getMovies } from "~/data/get-movies";
 import { Movie } from "./types";
 import { MovieLink } from "./movie-link";
+import { SearchIcon } from "./search-icon";
+import { Skeleton } from "~/components/skeleton";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const userAgent = request.headers.get("User-Agent");
@@ -112,34 +114,4 @@ function MoviesSkeleton() {
   return Array.from({ length: 10 }).map((_, index) => (
     <Skeleton key={index} className="h-72 w-full bg-gray-400/10" />
   ));
-}
-
-function SearchIcon({ className }: SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={24}
-      height={24}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <circle cx={11} cy={11} r={8} />
-      <path d="M21 21l-4.3-4.3" />
-    </svg>
-  );
-}
-
-function Skeleton({ className }: { className?: string }) {
-  return (
-    <div
-      className={["animate-pulse rounded-md bg-primary/10", className]
-        .filter(Boolean)
-        .join(" ")}
-    />
-  );
 }
