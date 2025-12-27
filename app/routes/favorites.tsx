@@ -3,7 +3,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { Heart } from "lucide-react";
 import { Card } from "~/components/ui/card";
 import { userFavorites } from "~/cookies.server";
-import { getMovieById, MovieDetails } from "~/data/get-movie-by-id";
+import { getMovieById } from "~/data/get-movie-by-id";
 
 type Cookie = { favorites: string[] };
 
@@ -13,12 +13,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     favorites: [],
   };
 
-  const results = await Promise.all(
+  const movies = await Promise.all(
     cookie.favorites.map((id) => getMovieById(id))
   );
-  const movies = results.filter((m): m is MovieDetails => m !== null);
 
-  return json({ movies });
+  return { movies };
 }
 
 export default function Favorites() {
