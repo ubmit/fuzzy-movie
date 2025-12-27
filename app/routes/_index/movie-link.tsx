@@ -7,7 +7,6 @@ export function MovieLink({ movie }: { movie: Movie }) {
     <Link
       to={`/details/${movie.imdbID}`}
       prefetch="intent"
-      unstable_viewTransition
       className="block transition-transform transform hover:scale-105"
     >
       <Card className="h-72 overflow-hidden">

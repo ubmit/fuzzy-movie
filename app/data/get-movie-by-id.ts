@@ -8,7 +8,23 @@ export async function getMovieById(movieId: string) {
     return response.json();
   } catch (error) {
     // Return mock data for development/demo purposes
-    const mockMovies: Record<string, any> = {
+    const mockMovies: Record<string, {
+      Title: string;
+      Year: string;
+      Rated?: string;
+      Released?: string;
+      Runtime?: string;
+      Genre?: string;
+      Director?: string;
+      Writer?: string;
+      Actors?: string;
+      Plot: string;
+      Language?: string;
+      Country?: string;
+      Poster: string;
+      imdbID: string;
+      Type: string;
+    }> = {
       "tt0133093": {
         Title: "The Matrix",
         Year: "1999",
