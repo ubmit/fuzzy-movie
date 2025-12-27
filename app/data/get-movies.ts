@@ -24,9 +24,11 @@ export async function getMovies(search: string): Promise<{ Search: Movie[] }> {
   url.searchParams.set("apikey", env.OMDB_API_KEY);
 
   const response = await fetch(url);
+
   if (!response.ok) {
     throw new Error(`OMDb request failed with status ${response.status}`);
   }
+
   const data: SearchResponse = await response.json();
 
   if (data.Response === "False") {
