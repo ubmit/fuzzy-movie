@@ -1,4 +1,5 @@
 import { Link } from "@remix-run/react";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Movie } from "./types";
 
 export function MovieLink({ movie }: { movie: Movie }) {
@@ -7,14 +8,22 @@ export function MovieLink({ movie }: { movie: Movie }) {
       to={`/details/${movie.imdbID}`}
       prefetch="intent"
       unstable_viewTransition
-      className="flex flex-col h-72 border-2 border-gray-100 rounded-md transition-transform transform hover:scale-105 hover:shadow-md"
+      className="block transition-transform transform hover:scale-105"
     >
-      <h2 className="px-2 py-1 text-base text-gray-700">{movie.Title}</h2>
-      <img
-        src={movie.Poster}
-        alt={`Poster of ${movie.Title}.`}
-        className="w-full h-full object-cover overflow-hidden"
-      />
+      <Card className="h-72 overflow-hidden">
+        <CardHeader className="p-0 pb-2">
+          <CardTitle className="px-3 py-2 text-base font-medium line-clamp-2">
+            {movie.Title}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <img
+            src={movie.Poster}
+            alt={`Poster of ${movie.Title}.`}
+            className="w-full h-full object-cover"
+          />
+        </CardContent>
+      </Card>
     </Link>
   );
 }

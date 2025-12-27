@@ -7,6 +7,7 @@ import { Movie } from "./types";
 import { MovieLink } from "./movie-link";
 import { SearchIcon } from "./search-icon";
 import { Skeleton } from "~/components/skeleton";
+import { Input } from "~/components/ui/input";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const userAgent = request.headers.get("User-Agent");
@@ -47,20 +48,20 @@ export default function Index() {
   }, [search]);
 
   return (
-    <section className="flex flex-col items-center text-gray-900">
+    <section className="flex flex-col items-center">
       <h1 className="text-5xl sm:text-6xl font-bold tracking-wide">
         Fuzzy Movie
       </h1>
-      <p className="max-w-prose text-lg text-center text-gray-700 mt-6">
+      <p className="max-w-prose text-lg text-center text-muted-foreground mt-6">
         Find your next film favorite with our fuzzy search. Keep track of your
         top picks with our{" "}
-        <Link to="/favorites" className="hover:opacity-70 transition-opacity">
+        <Link to="/favorites" className="text-primary hover:underline">
           favorites feature
         </Link>
         . Dive into the world of cinema now!
       </p>
       <Form
-        className="w-72 mt-4"
+        className="w-full max-w-md mt-6"
         id="search-form"
         onChange={(event) => {
           const isFirstSearch = search === null;
@@ -71,23 +72,23 @@ export default function Index() {
         }}
         role="search"
       >
-        <div className="relative mt-2 rounded-md shadow-sm">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
-            <SearchIcon className="stroke-gray-400 w-4 h-4" />
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <SearchIcon className="h-4 w-4 text-muted-foreground" />
           </div>
-          <input
-            className="w-full rounded-md border-0 py-2 px-8 text-gray-700 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-gray-500 sm:text-sm sm:leading-6 [&::-webkit-search-cancel-button]:hidden "
+          <Input
             aria-label="Search movies"
             defaultValue={search ?? ""}
             id="search"
             name="search"
-            placeholder="Search"
+            placeholder="Search movies..."
             type="search"
+            className="pl-9 pr-24 [&::-webkit-search-cancel-button]:hidden"
           />
-          <div className="absolute inset-y-0 right-0 flex items-center gap-1 pr-2">
-            <span className="px-2 font-mono flex place-items-center rounded-md text-sm sm:text-xs sm:leading-6 tracking-widest text-gray-400 bg-gray-200/40">
-              {isMacOS ? "CMD" : "CTRL"}+K
-            </span>
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+              <span className="text-xs">{isMacOS ? "⌘" : "Ctrl"}</span>K
+            </kbd>
           </div>
         </div>
       </Form>
@@ -112,6 +113,6 @@ function Movies({ movies }: { movies: { Search: Array<Movie> } }) {
 
 function MoviesSkeleton() {
   return Array.from({ length: 10 }).map((_, index) => (
-    <Skeleton key={index} className="h-72 w-full bg-gray-400/10" />
+    <Skeleton key={index} className="h-72 w-full" />
   ));
 }

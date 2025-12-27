@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 import { userFavorites } from "../../cookies.server";
 import { getMovieById } from "~/data/get-movie-by-id";
 import { Favorite } from "./favorite";
+import { Card, CardContent } from "~/components/ui/card";
 
 type Cookie = { favorites: string[] };
 
@@ -50,21 +51,27 @@ export default function Details() {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-5xl text-gray-900">{movie.Title}</h1>
+      <h1 className="text-4xl sm:text-5xl font-bold mb-8">{movie.Title}</h1>
 
-      <div className="flex gap-4 mt-12">
-        <div className="relative w-72 h-[432px]">
+      <div className="flex flex-col md:flex-row gap-8 w-full max-w-4xl">
+        <Card className="relative w-full md:w-80 h-[480px] overflow-hidden">
           <Favorite
             movie={{ favorite }}
-            className="absolute inset-y-0 right-0"
+            className="absolute top-3 right-3 z-10"
           />
-          <img
-            className="w-full h-full object-cover overflow-hidden"
-            src={movie.Poster}
-            alt={movie.Title}
-          />
+          <CardContent className="p-0 h-full">
+            <img
+              className="w-full h-full object-cover"
+              src={movie.Poster}
+              alt={movie.Title}
+            />
+          </CardContent>
+        </Card>
+        <div className="flex-1">
+          <p className="text-base leading-relaxed text-muted-foreground">
+            {movie.Plot}
+          </p>
         </div>
-        <p className="m-0 max-w-[576px]">{movie.Plot}</p>
       </div>
     </div>
   );
