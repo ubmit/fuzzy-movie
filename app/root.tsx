@@ -8,6 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { Header } from "~/components/header";
 import stylesheet from "~/tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -24,8 +25,9 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
-        <main className="max-w-screen-lg mx-auto py-10 px-3 sm:px-4 lg:px-0">
+      <body className="min-h-screen bg-background font-sans antialiased">
+        <Header />
+        <main className="max-w-screen-lg mx-auto py-8 px-3 sm:px-4 lg:px-0">
           <Outlet />
         </main>
         <ScrollRestoration />

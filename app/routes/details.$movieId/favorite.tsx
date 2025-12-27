@@ -1,5 +1,5 @@
 import { useFetcher } from "@remix-run/react";
-import { HeartIcon } from "./heart-icon";
+import { Heart } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
 export function Favorite({
@@ -7,7 +7,7 @@ export function Favorite({
   className,
 }: {
   movie: { favorite: boolean };
-  className: string;
+  className?: string;
 }) {
   const fetcher = useFetcher();
   const favorite = fetcher.formData
@@ -19,16 +19,16 @@ export function Favorite({
       <Button
         variant="secondary"
         size="icon"
-        className="rounded-full shadow-lg backdrop-blur-sm bg-background/80"
+        className="rounded-full shadow-lg backdrop-blur-sm bg-background/80 hover:bg-background/90"
         aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
         name="favorite"
         value={favorite ? "false" : "true"}
       >
-        <HeartIcon
+        <Heart
           className={
             favorite
-              ? "w-5 h-5 stroke-red-600 fill-red-600"
-              : "w-5 h-5 stroke-foreground fill-none"
+              ? "w-5 h-5 text-red-500 fill-red-500"
+              : "w-5 h-5 text-foreground"
           }
         />
       </Button>

@@ -1,13 +1,13 @@
 import { LoaderFunctionArgs, defer } from "@remix-run/node";
-import { Await, Form, Link, useLoaderData } from "@remix-run/react";
+import { Await, Form, useLoaderData } from "@remix-run/react";
+import { Film, Search } from "lucide-react";
 import { Suspense, useEffect } from "react";
 import { useDebounceSubmit } from "remix-utils/use-debounce-submit";
-import { getMovies } from "~/data/get-movies";
-import { Movie } from "./types";
-import { MovieLink } from "./movie-link";
-import { SearchIcon } from "./search-icon";
 import { Skeleton } from "~/components/skeleton";
 import { Input } from "~/components/ui/input";
+import { getMovies } from "~/data/get-movies";
+import { MovieLink } from "./movie-link";
+import { Movie } from "./types";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const userAgent = request.headers.get("User-Agent");
@@ -52,13 +52,8 @@ export default function Index() {
       <h1 className="text-5xl sm:text-6xl font-bold tracking-wide">
         Fuzzy Movie
       </h1>
-      <p className="max-w-prose text-lg text-center text-muted-foreground mt-6">
-        Find your next film favorite with our fuzzy search. Keep track of your
-        top picks with our{" "}
-        <Link to="/favorites" className="text-primary hover:underline">
-          favorites feature
-        </Link>
-        . Dive into the world of cinema now!
+      <p className="max-w-prose text-lg text-center text-muted-foreground mt-4">
+        Search millions of movies and save your favorites.
       </p>
       <Form
         className="w-full max-w-md mt-6"
@@ -74,7 +69,7 @@ export default function Index() {
       >
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <SearchIcon className="h-4 w-4 text-muted-foreground" />
+            <Search className="h-4 w-4 text-muted-foreground" />
           </div>
           <Input
             aria-label="Search movies"
@@ -92,27 +87,55 @@ export default function Index() {
           </div>
         </div>
       </Form>
-      <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 pt-8 w-full">
-        <Suspense fallback={<MoviesSkeleton />}>
-          <Await resolve={movies}>
-            {(movies) => <Movies movies={movies} />}
-          </Await>
-        </Suspense>
-      </ul>
+      {search ? (
+        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 pt-8 w-full">
+          <Suspense fallback={<MoviesSkeleton />}>
+            <Await resolve={movies}>
+              {(movies) => <Movies movies={movies} search={search} />}
+            </Await>
+          </Suspense>
+        </ul>
+      ) : (
+        <EmptyState />
+      )}
     </section>
   );
 }
 
-function Movies({ movies }: { movies: { Search: Array<Movie> } }) {
-  return movies?.Search?.map((movie) => (
+function Movies({ movies, search }: { movies: { Search: Array<Movie> }; search: string }) {
+  if (!movies?.Search?.length) {
+    return (
+      <li className="col-span-full flex flex-col items-center justify-center py-16 text-center">
+        <Film className="h-12 w-12 text-muted-foreground/50 mb-4" />
+        <p className="text-lg font-medium text-muted-foreground">No movies found</p>
+        <p className="text-sm text-muted-foreground/70 mt-1">
+          No results for "{search}"
+        </p>
+      </li>
+    );
+  }
+
+  return movies.Search.map((movie) => (
     <li key={movie.imdbID}>
       <MovieLink movie={movie} />
     </li>
   ));
 }
 
+function EmptyState() {
+  return (
+    <div className="flex flex-col items-center justify-center py-16 text-center">
+      <Film className="h-12 w-12 text-muted-foreground/50 mb-4" />
+      <p className="text-lg font-medium text-muted-foreground">Start searching</p>
+      <p className="text-sm text-muted-foreground/70 mt-1">
+        Type a movie title to get started
+      </p>
+    </div>
+  );
+}
+
 function MoviesSkeleton() {
   return Array.from({ length: 10 }).map((_, index) => (
-    <Skeleton key={index} className="h-72 w-full" />
+    <Skeleton key={index} className="aspect-[2/3] w-full rounded-lg" />
   ));
 }
