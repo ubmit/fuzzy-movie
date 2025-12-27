@@ -1,12 +1,13 @@
 import { useFetcher } from "@remix-run/react";
-import { HeartIcon } from "./heart-icon";
+import { Heart } from "lucide-react";
+import { Button } from "~/components/ui/button";
 
 export function Favorite({
   movie,
   className,
 }: {
   movie: { favorite: boolean };
-  className: string;
+  className?: string;
 }) {
   const fetcher = useFetcher();
   const favorite = fetcher.formData
@@ -15,23 +16,22 @@ export function Favorite({
 
   return (
     <fetcher.Form method="post" className={className}>
-      <button
-        className="p-2 mt-2 mr-2 rounded-md bg-gray-200/60 backdrop-blur-md shadow-md"
+      <Button
+        variant="secondary"
+        size="icon"
+        className="rounded-full shadow-lg backdrop-blur-sm bg-background/80 hover:bg-background/90"
         aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
         name="favorite"
         value={favorite ? "false" : "true"}
       >
-        <HeartIcon
-          className={[
-            "w-6 h-6 stroke-2",
+        <Heart
+          className={
             favorite
-              ? "stroke-red-600 fill-red-600"
-              : "stroke-gray-500 fill-none",
-          ]
-            .filter(Boolean)
-            .join(" ")}
+              ? "w-5 h-5 text-red-500 fill-red-500"
+              : "w-5 h-5 text-foreground"
+          }
         />
-      </button>
+      </Button>
     </fetcher.Form>
   );
 }

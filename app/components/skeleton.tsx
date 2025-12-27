@@ -1,9 +1,13 @@
-export function Skeleton({ className }: { className?: string }) {
+import { cn } from "~/lib/utils";
+
+export function Skeleton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={["animate-pulse rounded-md bg-primary/10", className]
-        .filter(Boolean)
-        .join(" ")}
+      className={cn("animate-pulse rounded-md bg-muted", className)}
+      {...props}
     />
   );
 }

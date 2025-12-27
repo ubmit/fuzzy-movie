@@ -49,6 +49,15 @@ module.exports = {
       },
     },
 
+    // shadcn/ui components - disable rules incompatible with forwardRef pattern
+    {
+      files: ["**/components/ui/**/*.{ts,tsx}"],
+      rules: {
+        "jsx-a11y/heading-has-content": "off",
+        "react/prop-types": "off",
+      },
+    },
+
     // Typescript
     {
       files: ["**/*.{ts,tsx}"],
