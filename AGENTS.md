@@ -8,17 +8,19 @@ Remix v2 movie search app using OMDB API. React 18, Tailwind CSS v4, shadcn/ui c
 
 ## Commands
 
+**Package Manager: `bun`**
+
 ```bash
 # Development
-pnpm dev              # Start dev server (remix dev --manual)
+bun dev              # Start dev server (remix dev --manual)
 
 # Build & Production
-pnpm build            # Build for production
-pnpm start            # Run production server
+bun build            # Build for production
+bun start            # Run production server
 
 # Code Quality
-pnpm lint             # ESLint
-pnpm typecheck        # TypeScript type checking
+bun lint             # ESLint
+bun typecheck        # TypeScript type checking
 ```
 
 No test framework configured.
