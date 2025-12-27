@@ -5,9 +5,8 @@ import { Suspense, useEffect } from "react";
 import { useDebounceSubmit } from "remix-utils/use-debounce-submit";
 import { Skeleton } from "~/components/skeleton";
 import { Input } from "~/components/ui/input";
-import { getMovies } from "~/data/get-movies";
+import { getMovies, Movie } from "~/data/get-movies";
 import { MovieLink } from "./movie-link";
-import { Movie } from "./types";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const userAgent = request.headers.get("User-Agent");
@@ -109,7 +108,7 @@ function Movies({ movies, search }: { movies: { Search: Array<Movie> }; search: 
         <Film className="h-12 w-12 text-muted-foreground/50 mb-4" />
         <p className="text-lg font-medium text-muted-foreground">No movies found</p>
         <p className="text-sm text-muted-foreground/70 mt-1">
-          No results for "{search}"
+          No results for &ldquo;{search}&rdquo;
         </p>
       </li>
     );

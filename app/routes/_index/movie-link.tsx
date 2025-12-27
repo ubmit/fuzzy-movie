@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import { Card } from "~/components/ui/card";
-import { Movie } from "./types";
+import { Movie } from "~/data/get-movies";
 
 export function MovieLink({ movie }: { movie: Movie }) {
   const hasValidPoster = movie.Poster && movie.Poster !== "N/A";
