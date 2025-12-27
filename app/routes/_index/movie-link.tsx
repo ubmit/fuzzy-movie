@@ -7,11 +7,11 @@ export function MovieLink({ movie }: { movie: Movie }) {
     <Link
       to={`/details/${movie.imdbID}`}
       prefetch="intent"
-      className="block transition-transform transform hover:scale-105"
+      className="block transition-transform hover:scale-105"
     >
       <Card className="h-72 overflow-hidden">
         <CardHeader className="p-0 pb-2">
-          <CardTitle className="px-3 py-2 text-base font-medium line-clamp-2">
+          <CardTitle className="px-3 py-2 text-base font-medium overflow-hidden text-ellipsis" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
             {movie.Title}
           </CardTitle>
         </CardHeader>

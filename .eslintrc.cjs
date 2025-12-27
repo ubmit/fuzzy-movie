@@ -49,6 +49,14 @@ module.exports = {
       },
     },
 
+    // shadcn/ui components - disable heading-has-content for components that use props spreading
+    {
+      files: ["**/components/ui/**/*.{ts,tsx}"],
+      rules: {
+        "jsx-a11y/heading-has-content": "off",
+      },
+    },
+
     // Typescript
     {
       files: ["**/*.{ts,tsx}"],
