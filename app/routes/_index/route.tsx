@@ -101,12 +101,20 @@ export default function Index() {
   );
 }
 
-function Movies({ movies, search }: { movies: { Search: Array<Movie> }; search: string }) {
+function Movies({
+  movies,
+  search,
+}: {
+  movies: { Search: Array<Movie> };
+  search: string;
+}) {
   if (!movies?.Search?.length) {
     return (
       <li className="col-span-full flex flex-col items-center justify-center py-16 text-center">
         <Film className="h-12 w-12 text-muted-foreground/50 mb-4" />
-        <p className="text-lg font-medium text-muted-foreground">No movies found</p>
+        <p className="text-lg font-medium text-muted-foreground">
+          No movies found
+        </p>
         <p className="text-sm text-muted-foreground/70 mt-1">
           No results for &ldquo;{search}&rdquo;
         </p>
@@ -125,7 +133,9 @@ function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <Film className="h-12 w-12 text-muted-foreground/50 mb-4" />
-      <p className="text-lg font-medium text-muted-foreground">Start searching</p>
+      <p className="text-lg font-medium text-muted-foreground">
+        Start searching
+      </p>
       <p className="text-sm text-muted-foreground/70 mt-1">
         Type a movie title to get started
       </p>
@@ -135,6 +145,6 @@ function EmptyState() {
 
 function MoviesSkeleton() {
   return Array.from({ length: 10 }).map((_, index) => (
-    <Skeleton key={index} className="aspect-[2/3] w-full rounded-lg" />
+    <Skeleton key={index} className="aspect-2/3 w-full rounded-lg" />
   ));
 }
