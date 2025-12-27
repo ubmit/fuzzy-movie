@@ -27,15 +27,15 @@ No test framework configured.
 
 ## Tech Stack
 
-| Category   | Technology                                    |
-| ---------- | --------------------------------------------- |
-| Framework  | Remix v2.6, React 18                          |
-| Styling    | Tailwind CSS v4, shadcn/ui (base-vega style)  |
-| Variants   | class-variance-authority (cva)                |
-| Classes    | clsx + tailwind-merge via `cn()` helper       |
-| Icons      | lucide-react                                  |
-| Validation | tiny-invariant                                |
-| Runtime    | Node.js >= 18, ES modules                     |
+| Category   | Technology                                   |
+| ---------- | -------------------------------------------- |
+| Framework  | Remix v2.6, React 18                         |
+| Styling    | Tailwind CSS v4, shadcn/ui (base-vega style) |
+| Variants   | class-variance-authority (cva)               |
+| Classes    | clsx + tailwind-merge via `cn()` helper      |
+| Icons      | lucide-react                                 |
+| Validation | tiny-invariant, zod                          |
+| Runtime    | Node.js >= 18, ES modules                    |
 
 ## Project Structure
 
@@ -98,13 +98,13 @@ import { MovieLink } from "./movie-link";
 
 ### Naming
 
-| Type       | Convention  | Example                         |
-| ---------- | ----------- | ------------------------------- |
-| Files      | kebab-case  | `get-movies.ts`, `movie-link.tsx` |
-| Components | PascalCase  | `MovieLink`, `SearchIcon`       |
-| Functions  | camelCase   | `getMovies`, `getMovieById`     |
-| Types      | PascalCase  | `Movie`, `Cookie`               |
-| Routes     | Remix flat  | `details.$movieId`, `_index`    |
+| Type       | Convention | Example                           |
+| ---------- | ---------- | --------------------------------- |
+| Files      | kebab-case | `get-movies.ts`, `movie-link.tsx` |
+| Components | PascalCase | `MovieLink`, `SearchIcon`         |
+| Functions  | camelCase  | `getMovies`, `getMovieById`       |
+| Types      | PascalCase | `Movie`, `Cookie`                 |
+| Routes     | Remix flat | `details.$movieId`, `_index`      |
 
 ### React Components
 
@@ -187,7 +187,9 @@ Use `.server.ts` suffix for server-only modules:
 ```typescript
 // cookies.server.ts
 import { createCookie } from "@remix-run/node";
-export const userFavorites = createCookie("user-favorites", { maxAge: 604_800 });
+export const userFavorites = createCookie("user-favorites", {
+  maxAge: 604_800,
+});
 ```
 
 ### Optimistic UI
