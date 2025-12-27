@@ -1,3 +1,5 @@
+import { env } from "~/env";
+
 const OMDB_API_URL = "https://www.omdbapi.com";
 
 export type Movie = {
@@ -19,7 +21,7 @@ export async function getMovies(search: string): Promise<{ Search: Movie[] }> {
   const url = new URL(OMDB_API_URL);
   url.searchParams.set("s", search);
   url.searchParams.set("type", "movie");
-  url.searchParams.set("apikey", process.env.OMDB_API_KEY!);
+  url.searchParams.set("apikey", env.OMDB_API_KEY);
 
   const response = await fetch(url);
   const data: SearchResponse = await response.json();
