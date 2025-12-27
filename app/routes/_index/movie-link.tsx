@@ -11,7 +11,7 @@ export function MovieLink({ movie }: { movie: Movie }) {
     >
       <Card className="h-72 overflow-hidden">
         <CardHeader className="p-0 pb-2">
-          <CardTitle className="px-3 py-2 text-base font-medium overflow-hidden text-ellipsis" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+          <CardTitle className="px-3 py-2 text-base font-medium line-clamp-2">
             {movie.Title}
           </CardTitle>
         </CardHeader>
