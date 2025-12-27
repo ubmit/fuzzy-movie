@@ -16,7 +16,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const results = await Promise.all(
     cookie.favorites.map((id) => getMovieById(id))
   );
-  const movies = results.filter((m): m is MovieDetails => m !== null);
+
+  const movies = results
+    .filter((m): m is MovieDetails => m !== null)
+    .sort((a, b) => a.Title.localeCompare(b.Title));
 
   return json({ movies });
 }
