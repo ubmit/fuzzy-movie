@@ -13,6 +13,7 @@ export function Header() {
           <Link
             to="/favorites"
             className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+            aria-label="Favorites"
           >
             <Heart className="h-4 w-4" />
             <span className="hidden sm:inline">Favorites</span>
