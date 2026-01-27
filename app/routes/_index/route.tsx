@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs, defer } from "@remix-run/node";
 import { Await, Form, useLoaderData } from "@remix-run/react";
-import { Film, Search } from "lucide-react";
+import { Film, Search, Heart } from "lucide-react";
 import { Suspense, useEffect } from "react";
 import { useDebounceSubmit } from "remix-utils/use-debounce-submit";
 import { Skeleton } from "~/components/skeleton";
@@ -47,47 +47,48 @@ export default function Index() {
   }, [search]);
 
   return (
-    <section className="flex flex-col items-center">
-      <h1 className="text-5xl sm:text-6xl font-bold tracking-wide">
-        Fuzzy Movie
-      </h1>
-      <p className="max-w-prose text-lg text-center text-muted-foreground mt-4">
-        Search millions of movies and save your favorites.
-      </p>
-      <Form
-        className="w-full max-w-md mt-6"
-        id="search-form"
-        onChange={(event) => {
-          const isFirstSearch = search === null;
-          submit(event.currentTarget, {
-            replace: !isFirstSearch,
-            debounceTimeout: 300,
-          });
-        }}
-        role="search"
-      >
-        <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <Search className="h-4 w-4 text-muted-foreground" />
+    <section className="flex flex-col">
+      <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between border-b border-white/10 pb-4 mb-8">
+        <h2 className="text-[14px] font-bold tracking-[0.2em] uppercase text-muted-foreground">
+          {search ? `Search results for "${search}"` : "Find your next favorite film"}
+        </h2>
+        
+        <Form
+          className="w-full sm:max-w-xs mt-4 sm:mt-0"
+          id="search-form"
+          onChange={(event) => {
+            const isFirstSearch = search === null;
+            submit(event.currentTarget, {
+              replace: !isFirstSearch,
+              debounceTimeout: 300,
+            });
+          }}
+          role="search"
+        >
+          <div className="relative group">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <Search className="h-3.5 w-3.5 text-muted-darker group-focus-within:text-primary transition-colors" />
+            </div>
+            <Input
+              aria-label="Search movies"
+              defaultValue={search ?? ""}
+              id="search"
+              name="search"
+              placeholder="Search..."
+              type="search"
+              className="h-9 pl-9 bg-secondary border-transparent focus-visible:bg-brand-focus focus-visible:text-white transition-all rounded-sm text-sm"
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-white/10 bg-card px-1.5 font-mono text-[10px] font-medium text-muted-darker">
+                <span className="text-xs">{isMacOS ? "⌘" : "Ctrl"}</span>K
+              </kbd>
+            </div>
           </div>
-          <Input
-            aria-label="Search movies"
-            defaultValue={search ?? ""}
-            id="search"
-            name="search"
-            placeholder="Search movies..."
-            type="search"
-            className="pl-9 pr-24 [&::-webkit-search-cancel-button]:hidden"
-          />
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-              <span className="text-xs">{isMacOS ? "⌘" : "Ctrl"}</span>K
-            </kbd>
-          </div>
-        </div>
-      </Form>
+        </Form>
+      </div>
+
       {search ? (
-        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 pt-8 w-full">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8 w-full">
           <Suspense fallback={<MoviesSkeleton />}>
             <Await resolve={movies}>
               {(movies) => <Movies movies={movies} search={search} />}
@@ -131,13 +132,23 @@ function Movies({
 
 function EmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center">
-      <Film className="h-12 w-12 text-muted-foreground/50 mb-4" />
-      <p className="text-lg font-medium text-muted-foreground">
-        Start searching
-      </p>
-      <p className="text-sm text-muted-foreground/70 mt-1">
-        Type a movie title to get started
+    <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed border-white/5 rounded-lg bg-card/50">
+      <div className="flex mb-6">
+        <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center ring-2 ring-background z-30">
+          <Film className="h-6 w-6 text-accent" />
+        </div>
+        <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center ring-2 ring-background -ml-2 z-20">
+          <Search className="h-6 w-6 text-primary" />
+        </div>
+        <div className="h-12 w-12 rounded-full bg-info/20 flex items-center justify-center ring-2 ring-background -ml-2 z-10">
+          <Heart className="h-6 w-6 text-info" />
+        </div>
+      </div>
+      <h3 className="text-xl font-black text-white uppercase tracking-widest mb-2">
+        Track films you&apos;ve watched.
+      </h3>
+      <p className="text-muted-foreground max-w-sm mx-auto text-[15px]">
+        Search for your favorite movies, explore details, and save them to your personal collection.
       </p>
     </div>
   );
@@ -145,6 +156,12 @@ function EmptyState() {
 
 function MoviesSkeleton() {
   return Array.from({ length: 10 }).map((_, index) => (
-    <Skeleton key={index} className="aspect-2/3 w-full rounded-lg" />
+    <div key={index} className="flex flex-col gap-3">
+      <Skeleton className="aspect-[2/3] w-full rounded-sm bg-secondary" />
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-4 w-3/4 bg-secondary" />
+        <Skeleton className="h-3 w-1/4 bg-secondary" />
+      </div>
+    </div>
   ));
 }
