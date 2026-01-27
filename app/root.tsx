@@ -25,9 +25,9 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="min-h-screen bg-background font-sans antialiased">
+      <body className="min-h-screen bg-background text-muted-foreground font-sans antialiased selection:bg-primary selection:text-background">
         <Header />
-        <main className="max-w-screen-lg mx-auto py-8 px-3 sm:px-4 lg:px-0">
+        <main className="max-w-screen-lg mx-auto py-10 px-3 sm:px-4 lg:px-0">
           <Outlet />
         </main>
         <ScrollRestoration />

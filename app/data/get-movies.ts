@@ -26,7 +26,9 @@ export async function getMovies(search: string): Promise<{ Search: Movie[] }> {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`OMDb request failed with status ${response.status}`);
+    throw new Error(
+      `OMDb request failed with status ${response.status} - ${response.statusText}`
+    );
   }
 
   const data: SearchResponse = await response.json();
