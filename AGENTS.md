@@ -198,9 +198,7 @@ Use `fetcher.formData` for optimistic updates:
 
 ```typescript
 const fetcher = useFetcher();
-const favorite = fetcher.formData
-  ? fetcher.formData.get("favorite") === "true"
-  : movie.favorite;
+const favorite = fetcher.formData ? fetcher.formData.get("favorite") === "true" : movie.favorite;
 ```
 
 ## Git Conventions

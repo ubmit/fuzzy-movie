@@ -34,9 +34,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
   if (formData.get("favorite") === "true") {
     cookie.favorites = [...cookie.favorites, params.movieId];
   } else {
-    cookie.favorites = cookie.favorites.filter(
-      (id: string) => id !== params.movieId
-    );
+    cookie.favorites = cookie.favorites.filter((id: string) => id !== params.movieId);
   }
 
   return new Response(JSON.stringify({ ok: true }), {
@@ -91,7 +89,7 @@ export default function Details() {
                 {movie.Year}
               </span>
             </div>
-            
+
             {movie.Director && movie.Director !== "N/A" && (
               <p className="mt-2 text-[14px] font-medium text-muted-foreground">
                 Directed by <span className="text-white font-bold hover:text-info cursor-default">{movie.Director}</span>
