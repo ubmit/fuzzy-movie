@@ -11,9 +11,7 @@ export function Favorite({
   className?: string;
 }) {
   const fetcher = useFetcher();
-  const favorite = fetcher.formData
-    ? fetcher.formData.get("favorite") === "true"
-    : movie.favorite;
+  const favorite = fetcher.formData ? fetcher.formData.get("favorite") === "true" : movie.favorite;
 
   return (
     <fetcher.Form method="post" className={cn("w-full", className)}>
@@ -30,10 +28,7 @@ export function Favorite({
         value={favorite ? "false" : "true"}
       >
         <Heart
-          className={cn(
-            "w-4 h-4",
-            favorite ? "fill-white" : ""
-          )}
+          className={cn("w-4 h-4", favorite ? "fill-white" : "")}
         />
         {favorite ? "Favorited" : "Add to favorites"}
       </Button>

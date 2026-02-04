@@ -13,9 +13,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     favorites: [],
   };
 
-  const results = await Promise.all(
-    cookie.favorites.map((id) => getMovieById(id))
-  );
+  const results = await Promise.all(cookie.favorites.map((id) => getMovieById(id)));
 
   const movies = results
     .filter((m): m is MovieDetails => m !== null)

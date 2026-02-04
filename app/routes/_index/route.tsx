@@ -52,7 +52,7 @@ export default function Index() {
         <h2 className="text-[14px] font-bold tracking-[0.2em] uppercase text-muted-foreground">
           {search ? `Search results for "${search}"` : "Find your next favorite film"}
         </h2>
-        
+
         <Form
           className="w-full sm:max-w-xs mt-4 sm:mt-0"
           id="search-form"
@@ -90,9 +90,7 @@ export default function Index() {
       {search ? (
         <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8 w-full">
           <Suspense fallback={<MoviesSkeleton />}>
-            <Await resolve={movies}>
-              {(movies) => <Movies movies={movies} search={search} />}
-            </Await>
+            <Await resolve={movies}>{(movies) => <Movies movies={movies} search={search} />}</Await>
           </Suspense>
         </ul>
       ) : (
@@ -102,20 +100,12 @@ export default function Index() {
   );
 }
 
-function Movies({
-  movies,
-  search,
-}: {
-  movies: { Search: Array<Movie> };
-  search: string;
-}) {
+function Movies({ movies, search }: { movies: { Search: Array<Movie> }; search: string }) {
   if (!movies?.Search?.length) {
     return (
       <li className="col-span-full flex flex-col items-center justify-center py-16 text-center">
         <Film className="h-12 w-12 text-muted-foreground/50 mb-4" />
-        <p className="text-lg font-medium text-muted-foreground">
-          No movies found
-        </p>
+        <p className="text-lg font-medium text-muted-foreground">No movies found</p>
         <p className="text-sm text-muted-foreground/70 mt-1">
           No results for &ldquo;{search}&rdquo;
         </p>

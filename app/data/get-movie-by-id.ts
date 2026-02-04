@@ -30,17 +30,17 @@ export type MovieDetails = {
 
 export async function getMovieById(movieId: string): Promise<MovieDetails | null> {
   const response = await fetch(
-    `https://www.omdbapi.com/?i=${movieId}&plot=full&apikey=${env.OMDB_API_KEY}`
+    `https://www.omdbapi.com/?i=${movieId}&plot=full&apikey=${env.OMDB_API_KEY}`,
   );
 
   if (!response.ok) {
     throw new Error(
-      `Failed to fetch movie with id "${movieId}": ${response.status} ${response.statusText}`
+      `Failed to fetch movie with id "${movieId}": ${response.status} ${response.statusText}`,
     );
   }
 
   const data = await response.json();
-  
+
   if (data.Response === "False") {
     return null;
   }

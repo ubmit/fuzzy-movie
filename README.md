@@ -38,7 +38,8 @@ flyctl deploy
 ## Code Quality
 
 ```sh
-bun lint        # ESLint
+bun lint        # oxlint
+bun format      # oxfmt
 bun typecheck   # TypeScript type checking
 ```
 

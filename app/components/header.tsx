@@ -23,7 +23,7 @@ export function Header() {
             to="/"
             className={cn(
               "text-[11px] font-bold tracking-[0.15em] uppercase transition-colors hover:text-white",
-              location.pathname === "/" ? "text-white" : "text-muted-foreground"
+              location.pathname === "/" ? "text-white" : "text-muted-foreground",
             )}
           >
             Movies
@@ -32,10 +32,15 @@ export function Header() {
             to="/favorites"
             className={cn(
               "flex items-center gap-1.5 text-[11px] font-bold tracking-[0.15em] uppercase transition-colors hover:text-white",
-              location.pathname === "/favorites" ? "text-white" : "text-muted-foreground"
+              location.pathname === "/favorites" ? "text-white" : "text-muted-foreground",
             )}
           >
-            <Heart className={cn("h-3 w-3", location.pathname === "/favorites" ? "fill-accent text-accent" : "")} />
+            <Heart
+              className={cn(
+                "h-3 w-3",
+                location.pathname === "/favorites" ? "fill-accent text-accent" : "",
+              )}
+            />
             Favorites
           </Link>
         </nav>
